@@ -1,50 +1,49 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 const DeleteBug = () => {
-
   const [getBugs, setGetBugs] = useState([]);
-  const [deletedBug, setDeletedBug] = useState([])
+  const [deletedBug, setDeletedBug] = useState([]);
   const [deleteBugId, setDeleteBugId] = useState({
-    id: ''
+    id: "",
   });
 
   // GET DATA FROM DATABASE
   async function handleGetAllBugs() {
     try {
-      const response = await axios.get("http://localhost:3000/api/bugs-home", {
-        method: "GET"
-      })
+      const response = await axios.get("http://localhost:4000/api/bugs-home", {
+        method: "GET",
+      });
       setGetBugs(response.data.bugs);
-
     } catch (error) {
       console.log(error);
-
     }
   }
 
-
   // HANDLE THE INPUT DATA AND SET TO USESTATE
   const handleChangeDelete = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setDeleteBugId({
       ...deleteBugId,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
   // FUNCTION FOR DELETE
   async function handleDeleteForm() {
     if (!deleteBugId.id) {
-      alert("Bug ID doesn't exist")
+      alert("Bug ID doesn't exist");
       return;
     }
 
     try {
-      const response = await axios.delete("http://localhost:3000/api/deleteBugs", {
-        data: deleteBugId, // Pass the deleteBugId as the data to be deleted
-      });
+      const response = await axios.delete(
+        "http://localhost:4000/api/deleteBugs",
+        {
+          data: deleteBugId, // Pass the deleteBugId as the data to be deleted
+        }
+      );
       console.log(response);
-      setDeletedBug([response.data])
+      setDeletedBug([response.data]);
     } catch (error) {
       console.log(error);
     }
@@ -55,21 +54,27 @@ const DeleteBug = () => {
       await handleGetAllBugs();
     };
     fetchData();
-
   }, []);
 
-
-
   return (
-    <div className='DeleteBug'>
-      <form className='deleteForm' onSubmit={(e) => {
-        e.preventDefault(); // Prevent default form submission
-        handleDeleteForm();
-      }}>
+    <div className="DeleteBug">
+      <form
+        className="deleteForm"
+        onSubmit={(e) => {
+          e.preventDefault(); // Prevent default form submission
+          handleDeleteForm();
+        }}
+      >
         <div className="inp-delete">
           <label>Bug Id: </label>
-          <select name="id" value={deleteBugId.id} onChange={handleChangeDelete}>
-            <option value="" style={{ color: 'grey' }}>Select Bug Id</option>
+          <select
+            name="id"
+            value={deleteBugId.id}
+            onChange={handleChangeDelete}
+          >
+            <option value="" style={{ color: "grey" }}>
+              Select Bug Id
+            </option>
             {getBugs.map((data) => (
               <option key={data.id} value={data.id}>
                 {data.id}
@@ -83,7 +88,9 @@ const DeleteBug = () => {
         <div>
           {deletedBug.map((data) => (
             <div key={data.id}>
-              <h1 style={{ color: 'red' }}>Bug Deleted Successfully  ID: {data.id}</h1>
+              <h1 style={{ color: "red" }}>
+                Bug Deleted Successfully ID: {data.id}
+              </h1>
               {/* ID: {data.id}
               <h1>Bug Name: {data.bugName}</h1>
               <h1>Bug Status: {data.bugStatus}</h1>
@@ -91,11 +98,9 @@ const DeleteBug = () => {
               <h1>Priority: {data.priority}</h1>
               <h1>Assignee: {data.assignee}</h1> */}
             </div>
-
           ))}
         </div>
       ) : null}
-
 
       <div className="table-container">
         <table className="bug-table">
@@ -123,9 +128,8 @@ const DeleteBug = () => {
           </tbody>
         </table>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default DeleteBug
+export default DeleteBug;

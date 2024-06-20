@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios';
-
-
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const ReadBugs = () => {
   const [getBugs, setGetBugs] = useState([]);
@@ -9,14 +7,12 @@ const ReadBugs = () => {
   // GET DATA FROM DATABASE
   async function handleGetAllBugs() {
     try {
-      const response = await axios.get("http://localhost:3000/api/bugs-home", {
-        method: "GET"
-      })
+      const response = await axios.get("http://localhost:4000/api/bugs-home", {
+        method: "GET",
+      });
       setGetBugs(response.data.bugs);
-
     } catch (error) {
       console.log(error);
-
     }
   }
 
@@ -25,11 +21,10 @@ const ReadBugs = () => {
       await handleGetAllBugs();
     };
     fetchData();
-
   }, []);
 
   return (
-    <div className='readBugs'>
+    <div className="readBugs">
       <div className="table-container">
         <table className="bug-table">
           <thead>
@@ -57,7 +52,7 @@ const ReadBugs = () => {
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ReadBugs
+export default ReadBugs;

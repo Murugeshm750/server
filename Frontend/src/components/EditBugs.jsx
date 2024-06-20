@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const EditBugs = () => {
-  const [idDetail, setIdDetail] = useState({ id: '' });
+  const [idDetail, setIdDetail] = useState({ id: "" });
   const [bugDetails, setBugDetails] = useState(null);
   const [bugList, setBugList] = useState([]);
   const bugFormData = {
-    id: '',
-    bugName: '',
-    bugStatus: '',
-    priority: '',
-    assignee: ''
+    id: "",
+    bugName: "",
+    bugStatus: "",
+    priority: "",
+    assignee: "",
   };
-  const [updateList, setUpdateList] = useState(bugFormData)
+  const [updateList, setUpdateList] = useState(bugFormData);
 
   const handleUpdateForm = (e) => {
     const { name, value } = e.target;
@@ -25,31 +25,30 @@ const EditBugs = () => {
   const handleUpdateFormSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
     try {
-      const response = await axios.put('http://localhost:3000/api/updateBug', updateList);
+      const response = await axios.put(
+        "http://localhost:4000/api/updateBug",
+        updateList
+      );
       setUpdateList(bugFormData);
       console.log("Bugs : ", response);
     } catch (err) {
-      console.error('Error ', err)
-
+      console.error("Error ", err);
     }
     // Store the data or perform any other necessary actions here
-    console.log('Bug Name:', updateList.bugName);
-    console.log('Bug Status:', updateList.bugStatus);
-    console.log('Bug Priority:', updateList.priority);
-    console.log('Bug Assignee:', updateList.assignee);
-
-
+    console.log("Bug Name:", updateList.bugName);
+    console.log("Bug Status:", updateList.bugStatus);
+    console.log("Bug Priority:", updateList.priority);
+    console.log("Bug Assignee:", updateList.assignee);
   };
-
 
   async function getBugs() {
     try {
-      const response = await axios.get('http://localhost:3000/api/bugs-home', {
-        method: "GET"
+      const response = await axios.get("http://localhost:4000/api/bugs-home", {
+        method: "GET",
       });
       setBugList(response.data.bugs);
     } catch (error) {
-      console.error('Error fetching bugs: ', error);
+      console.error("Error fetching bugs: ", error);
     }
   }
 
@@ -68,13 +67,15 @@ const EditBugs = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/findBugs', idDetail);
+      const response = await axios.post(
+        "http://localhost:4000/api/findBugs",
+        idDetail
+      );
       console.log("Bugs : ", response);
       setBugDetails(response.data.bugs); // Set bug details when received
     } catch (err) {
-      console.error('Error', err);
+      console.error("Error", err);
     }
-
   };
 
   useEffect(() => {
@@ -85,12 +86,12 @@ const EditBugs = () => {
   }, []);
 
   return (
-    <div className='editBugs'>
+    <div className="editBugs">
       <form onSubmit={(e) => handleFormSubmit(e)}>
         <div className="form-input">
           <label>Bug Id : </label>
           {/* <input type="text" name='id' value={idDetail.id} onChange={handleChange} /> */}
-          <select name='id' value={bugList.id} onChange={handleChange}>
+          <select name="id" value={bugList.id} onChange={handleChange}>
             {bugList.map((data) => (
               <option key={data.id} value={data.id}>
                 {data.id}
@@ -113,18 +114,32 @@ const EditBugs = () => {
         </div>
       )}
 
-      <form onSubmit={handleUpdateFormSubmit} className='bugForm'>
+      <form onSubmit={handleUpdateFormSubmit} className="bugForm">
         <div className="form-input">
           <label>Bug Id : </label>
-          <input type="text" name='id' value={bugList[0]?.id} onChange={handleUpdateForm} />
+          <input
+            type="text"
+            name="id"
+            value={bugList[0]?.id}
+            onChange={handleUpdateForm}
+          />
         </div>
         <div className="form-input">
           <label>Bug Name : </label>
-          <input type="text" name='bugName' value={bugList[0]?.bugName} onChange={handleUpdateForm} />
+          <input
+            type="text"
+            name="bugName"
+            value={bugList[0]?.bugName}
+            onChange={handleUpdateForm}
+          />
         </div>
         <div className="form-input">
-          <label >Bug Status : </label>
-          <select name="bugStatus" value={bugList[0]?.bugStatus} onChange={handleUpdateForm}>
+          <label>Bug Status : </label>
+          <select
+            name="bugStatus"
+            value={bugList[0]?.bugStatus}
+            onChange={handleUpdateForm}
+          >
             <option value=""></option>
             <option value="In Progress">In Progress</option>
             <option value="Resolved">Resolved</option>
@@ -133,8 +148,12 @@ const EditBugs = () => {
           </select>
         </div>
         <div className="form-input">
-          <label >Priority : </label>
-          <select name="priority" value={bugList[0]?.priority} onChange={handleUpdateForm}>
+          <label>Priority : </label>
+          <select
+            name="priority"
+            value={bugList[0]?.priority}
+            onChange={handleUpdateForm}
+          >
             <option value=""></option>
             <option value="Immediate">Immediate</option>
             <option value="Low">Low</option>
@@ -144,8 +163,12 @@ const EditBugs = () => {
           </select>
         </div>
         <div className="form-input">
-          <label >Assignee : </label>
-          <select name="assignee" value={bugList[0]?.assignee} onChange={handleUpdateForm}>
+          <label>Assignee : </label>
+          <select
+            name="assignee"
+            value={bugList[0]?.assignee}
+            onChange={handleUpdateForm}
+          >
             <option value=""></option>
             <option value="Murugesh">Murugesh</option>
             <option value="Niresh">Niresh</option>
@@ -157,7 +180,6 @@ const EditBugs = () => {
         <div className="form-btn">
           <button type="submit">Update</button>
         </div>
-
       </form>
     </div>
   );
